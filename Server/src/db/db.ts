@@ -34,19 +34,12 @@ async function close_connection() {
  * Получить игры из базы данных.
  */
 export async function get_games() {
-
-    await connect_to_db();
-
-    const collection = client.db('steamdb').collection('steamdb');
-
-    const cursor = collection.find();
-
-    for await (const doc of cursor) {
-        console.log(doc);
-    }
-
-    await close_connection();
-
+    await connect_to_db() // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+    const cursor = collection.find(); // Получить все записи из коллекции.
+    const games =  await cursor.toArray();
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return games; // Вернуть массив с записями игр.
 }
 
 
