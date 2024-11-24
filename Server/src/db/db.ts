@@ -23,6 +23,14 @@ async function connect_to_db() {
 }
 
 /**
+ * Закрыть соединение к базе данных.
+ */
+async function close_connection() {
+    await client.close();
+    console.log('Connection closed.'); // Сообщить о закрытии соединения.
+}
+
+/**
  * Получить игры из базы данных.
  */
 export async function get_games() {
@@ -37,7 +45,7 @@ export async function get_games() {
         console.log(doc);
     }
 
-    client.close();
+    await close_connection();
 
 }
 
