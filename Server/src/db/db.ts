@@ -1,20 +1,33 @@
 import { MongoClient } from "mongodb";
 import { DATABASE_URL } from "../env/env-vars"
 
+
+const url = DATABASE_URL!; // Строка подключения к MongoDB.
+
+if (!DATABASE_URL) { // Сообщить, если не удалось получить ссылку на базу данных.
+    throw new Error("DATABASE_URL is not set");
+}
+
+const client = new MongoClient(url); // Клиент подключения к MongoDB.
+
+/**
+ * Попытаться подключиться к базе данных.
+ */
+async function connect_to_db() {
+    try {
+        await client.connect();
+        console.log('Connected to MongoDB.');
+    } catch (error) {
+        console.error('Error connect to MongoDB.', error);
+    }
+}
+
 /**
  * Получить игры из базы данных.
  */
 export async function get_games() {
 
-    if (!DATABASE_URL) {
-        throw new Error("DATABASE_URL is not ");
-    }
-
-    const url = DATABASE_URL; // Строка подключения к MongoDB.
-
-    const client = new MongoClient(url); // Клиент подключения к MongoDB.
-
-    await client.connect();
+    await connect_to_db();
 
     const collection = client.db('steamdb').collection('steamdb');
 
