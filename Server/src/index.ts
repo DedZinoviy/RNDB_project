@@ -1,7 +1,3 @@
+import { get_games } from "./db/db";
 
-import { DATABASE_URL } from "./env/env-vars";
-
-console.log(DATABASE_URL);
-if (DATABASE_URL) {
-    console.log(DATABASE_URL);
-}
+get_games();
