@@ -131,3 +131,16 @@ export async function delete_one(filter: Document) {
     await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат изменения.
 }
+
+/**
+ * Удалить все документы в коллекции, удовлетворяющие заданному фильтру.
+ * @param filter фильтр для поиска удаляемых документов.
+ * @returns Успешность удаления.
+ */
+export async function delete_many(filter: Document) {
+    await connect_to_db(); // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+    const result = await collection.deleteOne(filter); // Удалить документы в БД.
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return result; // Вернуть результат удаления.    
+}
