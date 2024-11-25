@@ -1,11 +1,19 @@
-import { get_all_games } from "./db/db";
+import express, {Request, Response} from 'express';
 
-async function main() {
-    const games = await get_all_games();
+// Экземпляр серверного приложения.
+export const app = express();
 
-    for (let i = 0; i < 3; i++) {
-        console.log(games[i]);
-    }
-}
+// Настройка обработки (парсинга) JSON.
+app.use(express.json());
 
-main();
+// Обработка маршрута.
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello World!');
+});
+
+// Настройка сервера на прослушивание порта.
+const port = 3000;
+app.listen( port, () => {
+    console.log('Server running on port:' + port);
+});
+
