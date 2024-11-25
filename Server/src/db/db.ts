@@ -64,5 +64,15 @@ export async function get_games_by(pipline: Document[]) {
     return games; // Вернуть массив с записями игр.
 }
 
-
-
+/**
+ * Вставить один документ в БД.
+ * @param doc документ, который будет вставлен в БД.
+ * @returns успешность вставки.
+ */
+export async function insert_one(doc : Document) {
+    await connect_to_db(); // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+    const result = await collection.insertOne(doc); // Создать документ в БД.
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return result; // Вернуть результат вставки.
+}
