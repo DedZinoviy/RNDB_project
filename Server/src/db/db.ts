@@ -1,7 +1,5 @@
 import { MongoClient, Document } from "mongodb";
 import { DATABASE_URL } from "../env/env-vars"
-import exp from "constants";
-
 
 const url = DATABASE_URL!; // Строка подключения к MongoDB.
 
