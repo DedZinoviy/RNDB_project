@@ -1,5 +1,6 @@
 import { MongoClient, Document } from "mongodb";
 import { DATABASE_URL } from "../env/env-vars"
+import exp from "constants";
 
 
 const url = DATABASE_URL!; // Строка подключения к MongoDB.
@@ -114,6 +115,19 @@ export async function update_many(filter : Document, updated_doc : Document) {
     await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.updateMany(filter, {$set: updated_doc}); // Изменить документы в БД.
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return result; // Вернуть результат изменения.
+}
+
+/**
+ * Удалить первый попавшийся документ в коллекции, удовлетворяющий заданному фильтру.
+ * @param filter фильтр для поиска удаляемого документа.
+ * @returns Успешность удаления.
+ */
+export async function delete_one(filter: Document) {
+    await connect_to_db(); // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+    const result = await collection.deleteOne(filter); // Удалить документ в БД.
     await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат изменения.
 }
