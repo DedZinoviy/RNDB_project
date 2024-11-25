@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, Document } from "mongodb";
 import { DATABASE_URL } from "../env/env-vars"
 
 
@@ -31,9 +31,10 @@ async function close_connection() {
 }
 
 /**
- * Получить игры из базы данных.
+ * Получить все игры из базы данных.
+ * @returns массив документов игр.
  */
-export async function get_games() {
+export async function get_all_games() {
     await connect_to_db() // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const cursor = collection.find(); // Получить все записи из коллекции.
@@ -41,5 +42,27 @@ export async function get_games() {
     await close_connection(); // Закрыть сооединение к базе данных.
     return games; // Вернуть массив с записями игр.
 }
+
+/**
+ * Получить игры из базы данных согласно пайплайну.
+ * @param pipline пайплайн, согласно которому будут получены игры.
+ * @returns массив документов игр.
+ */
+export async function get_games_by(pipline: Document[]) {
+    // Пример запроса.
+    // const pipline: Document[] = [
+    //     {$match: {sid: 10}}
+    // ];
+
+    await connect_to_db() // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+
+    const cursor = collection.aggregate(pipline); // Получить записи из коллекции согласно пайплайну.
+    const games =  await cursor.toArray(); 
+
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return games; // Вернуть массив с записями игр.
+}
+
 
 
