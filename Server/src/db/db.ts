@@ -76,3 +76,16 @@ export async function insert_one(doc : Document) {
     await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат вставки.
 }
+
+/**
+ * Вставить несклько документов в БД.
+ * @param doc документы, которые будут вставлены в БД.
+ * @returns успешность вставки.
+ */
+export async function insert_many(docs : Document[]) {
+    await connect_to_db(); // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+    const result = await collection.insertMany(docs); // Создать документы в БД.
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return result; // Вернуть результат вставки.
+}
