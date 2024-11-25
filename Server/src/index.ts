@@ -1,3 +1,11 @@
-import { get_games } from "./db/db";
+import { get_all_games } from "./db/db";
 
-get_games();
+async function main() {
+    const games = await get_all_games();
+
+    for (let i = 0; i < 3; i++) {
+        console.log(games[i]);
+    }
+}
+
+main();
