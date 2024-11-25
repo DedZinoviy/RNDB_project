@@ -103,3 +103,17 @@ export async function update_one(filter : Document, updated_doc : Document) {
     await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат изменения.
 }
+
+/**
+ * Обновить все документы в коллекции, удовлетворяющие заданному фильтру.
+ * @param filter фильтр для поиска обновляемых документов.
+ * @param updated_doc изменяемые поля документов.
+ * @returns успешность изменения.
+ */
+export async function update_many(filter : Document, updated_doc : Document) {
+    await connect_to_db(); // Подключиться к базе данных.
+    const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
+    const result = await collection.updateMany(filter, {$set: updated_doc}); // Изменить документы в БД.
+    await close_connection(); // Закрыть сооединение к базе данных.
+    return result; // Вернуть результат изменения.
+}
