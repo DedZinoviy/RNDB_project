@@ -7,3 +7,5 @@ const enviroment = dotenv.config({path: join('.env')}); // Сконфигури�
 dotenvExpand.expand(enviroment); // Расширить переменные среды, применив интерполяцию там, где она необходимо.
 
 export const { DATABASE_URL } = process.env; // Получить переменную DATABASE_URL.
+
+export const { SERVER_PORT } = process.env; // Получить переменную SERVER_PORT (порт, на котором будет работать сервер).

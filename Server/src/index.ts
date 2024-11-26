@@ -1,4 +1,5 @@
 import express, {Request, Response} from 'express';
+import { SERVER_PORT } from './env/env-vars';
 
 // Экземпляр серверного приложения.
 export const app = express();
@@ -12,7 +13,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Настройка сервера на прослушивание порта.
-const port = 3000;
+const port = SERVER_PORT || 3000;
 app.listen( port, () => {
     console.log('Server running on port:' + port);
 });
