@@ -1,6 +1,6 @@
 import Router, { Request, Response } from 'express';
 import { Document } from 'mongodb';
-import { get_all_games, get_games_by } from '../db/db';
+import { get_games_by } from '../db/db';
 
 const games_router = Router(); // Экземляр роутера для запросов о играх.
 
@@ -14,9 +14,6 @@ games_router.get(
 
         // Запрос к БД.
         let doc: Document[] = [];
-        
-        // Получить все игры, если запрос пустой.
-        if (Object.keys(req.query).length === 0) { result_array = await get_all_games(); }
         
         // Получить игры с максимальной текущей ценой из запроса.
         if (req.query.max_cur_price != undefined) { doc.push({$match: {'current_price': {$lte: Number(req.query.max_cur_price)}}}); }
