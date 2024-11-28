@@ -27,4 +27,31 @@ games_router.get(
     }
 );
 
+/**
+ * Обработка маршрута добавления игр.
+ */
+games_router.post(
+    '/', async (req: Request, res: Response) => {
+
+    }
+);
+
+/**
+ * Обработка маршрута изменения записи об играх.
+ */
+games_router.patch(
+    '/:id', async (req: Request, res: Response) => {
+
+    }
+);
+
+/**
+ * Обработка маршрута удаления игр.
+ */
+games_router.delete(
+    '/:id', async (req: Request, res: Response) => {
+        
+    }
+);
+
 export default games_router; // Экспортировать роутер для других модулей.
