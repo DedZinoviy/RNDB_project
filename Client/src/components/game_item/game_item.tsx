@@ -1,4 +1,5 @@
 import { Game } from "../../types/game";
+import './game_item.css'
 
 interface GameItemProp {
     game: Game;
