@@ -18,6 +18,9 @@ export type Game = {
     /** Изображение игры в Steam. */
     image: string;
 
+    /** Описание игры. */
+    description: string;
+
     /** текущая цена на игру в Steam. */
     current_price: number;
 
