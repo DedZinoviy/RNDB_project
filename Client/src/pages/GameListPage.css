@@ -1,0 +1,23 @@
+/* Общие стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Контейнер для фильтра и списка игр */
+.content {
+    display: flex;
+    padding: 20px;
+    gap: 20px;  /* Добавляет пространство между фильтром и списком игр */
+    flex-wrap: wrap;  /* Позволяет содержимому адаптироваться под экран */
+}
