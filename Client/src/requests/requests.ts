@@ -7,7 +7,7 @@ const host = "localhost:5000"
  * @returns ответ от сервера.
 */
 export async function get_all_films() {
-    const response = await fetch(host + '/games', {method: 'GET'}); // Отправить запрос на сервер.
+    const response = await fetch('http://'+ host + '/games', {method: 'GET'}); // Отправить запрос на сервер.
     return response;
 }
 
