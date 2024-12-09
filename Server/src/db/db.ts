@@ -15,7 +15,8 @@ const client = new MongoClient(url); // Клиент подключения к M
 async function connect_to_db() {
     try {
         await client.connect();
-        console.log('Connected to MongoDB.');
+        const now = new Date(); // Получить дату подключения.
+        console.log(now.toISOString() + ': Connected to MongoDB.');
     } catch (error) {
         console.error('Error connect to MongoDB.', error);
     }
@@ -26,7 +27,8 @@ async function connect_to_db() {
  */
 async function close_connection() {
     await client.close();
-    console.log('Connection closed.'); // Сообщить о закрытии соединения.
+    const now = new Date();
+    console.log(now.toISOString() + ': Connection closed.'); // Сообщить о закрытии соединения.
 }
 
 /**
