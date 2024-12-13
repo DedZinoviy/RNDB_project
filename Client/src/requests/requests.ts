@@ -22,6 +22,6 @@ export async function get_games_by(params: FilterParams) {
     if (params.minCurPrice !== undefined && !Number.isNaN(params.minCurPrice)) {checked_params.min_cur_price = params.minCurPrice.toString();}
     // Добавить максимальную текущую цену, если таковая определена.
     if (params.maxCurPrice !== undefined && !Number.isNaN(params.maxCurPrice)) {checked_params.max_cur_price = params.maxCurPrice.toString();}
-    const response = await fetch(host + '/games?' + new URLSearchParams(checked_params).toString(), {method: 'GET'}); // Отправить запрос на сервер.
+    const response = await fetch('http://' + host + '/games?' + new URLSearchParams(checked_params).toString(), {method: 'GET'}); // Отправить запрос на сервер.
     return response;
 }
