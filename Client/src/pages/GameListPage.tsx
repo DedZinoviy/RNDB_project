@@ -30,7 +30,7 @@ export default function GameListPage() {
         <>
             <Header></Header>
             <div className="content">
-                <Filter></Filter>
+                <Filter setGames={setGames}></Filter>
                 <GameItemList games={games}/>
             </div>
             <Footer></Footer>
