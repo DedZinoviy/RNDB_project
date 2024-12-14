@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FilterParams } from '../../types/FilterParams';
 import { Game, json_to_game } from '../../types/game';
 import { get_games_by } from '../../requests/requests';
+import { itemsPerPage } from '../../pages/GameListPage';
 
 /**
  * Свойства компонента фильтра.
@@ -11,6 +12,12 @@ interface FilterProps {
   
   /** Метод для записи игр. */
   setGames: (React.Dispatch<React.SetStateAction<Game[]>>)
+  
+  /** Метод для записи текущей страницы. */
+  setCurrentPage: (React.Dispatch<React.SetStateAction<number>>)
+  
+  /** Метод для записи количества страниц. */
+  setTotalPages: (React.Dispatch<React.SetStateAction<number>>)
 }
 
 /**
@@ -18,7 +25,7 @@ interface FilterProps {
  * @param FilterProps.setGames метод для записи списка игр.
  * @returns компонент отображения фильтра игр.
  */
-export default function Filter({setGames} : FilterProps) {
+export default function Filter({setGames, setCurrentPage, setTotalPages} : FilterProps) {
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(10000);
     const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(Number(e.target.value));
@@ -74,6 +81,8 @@ export default function Filter({setGames} : FilterProps) {
         (json) => {
             if (json.length > 0) { // Получить преобразованный в нужный тип массив игр, если таковые получены.
                 const g = json_to_game(json);
+                setCurrentPage(1);
+                setTotalPages(Math.ceil(g.length / itemsPerPage));
                 setGames(g);
             }
         }
