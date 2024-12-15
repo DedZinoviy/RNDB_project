@@ -21,6 +21,9 @@ games_router.get(
         // Получить игры с минимальной текущей игрой из запроса.
         if (req.query.min_cur_price != undefined) { doc.push({$match: {'current_price': {$gte: Number(req.query.min_cur_price)}}}); }
         
+        // Получить игры по подстроке названия игры.
+        if (req.query.name_elem != undefined) { doc.push({$match: {'name': {$regex: req.query.name_elem, $options:"i"}}}); }
+
         doc.push({$sort: {'name': 1}}); // Осортировать игры по названию.
         result_array = await get_games_by(doc); // Получение игр из БД по запросу.
         res.send(result_array); // Ответ на запрос.
