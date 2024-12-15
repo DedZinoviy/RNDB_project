@@ -30,10 +30,30 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
     const [maxPrice, setMaxPrice] = useState(10000);
     const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(Number(e.target.value));
     const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(Number(e.target.value));
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // По умолчанию сортировка по возрастанию.
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSortOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSortOrder(e.target.value as 'asc' | 'desc');
+    };
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value);
+    };
 
     return (
         <form className="filter" onSubmit={handleSubmit}>
           <h2>Фильтрация по цене</h2>
+          {/* Поле для поиска */}
+          <label htmlFor="search">Поиск по названию:</label>
+          <input
+            type="text"
+            id="search"
+            name="search"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Введите название игры или его часть"
+          />
           <label htmlFor="min-price">Минимальная цена:</label>
           <input
             type="number"
@@ -57,6 +77,31 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
           <p>
             Цена: <span id="price-range">{minPrice}₽ - {maxPrice}₽</span>
           </p>
+          {/* Параметры сортировки */}
+          <div className="sort-order">
+            <label>Порядок сортировки:</label>
+            <label>
+              <input
+                type="radio"
+                name="sortOrder"
+                value="asc"
+                checked={sortOrder === 'asc'}
+                onChange={handleSortOrderChange}
+              />
+            По возрастанию
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="sortOrder"
+                value="desc"
+                checked={sortOrder === 'desc'}
+                onChange={handleSortOrderChange}
+              />
+              По убыванию
+            </label>
+          </div>
+
           <button type="submit">Применить фильтры</button>
         </form>
     );
@@ -70,7 +115,9 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
       const formData = new FormData(e.currentTarget);
       const minCurPrice = parseInt(formData.get('min-price') as string);
       const maxCurPrice = parseInt(formData.get('max-price') as string);
-      const FilterData: FilterParams = {minCurPrice: minCurPrice, maxCurPrice: maxCurPrice};
+      const sorting_order = formData.get('sortOrder') as string;
+      const search = formData.get('search') as string;
+      const FilterData: FilterParams = {minCurPrice: minCurPrice, maxCurPrice: maxCurPrice, order: sorting_order, name: search};
       
       get_games_by(FilterData).then( // Получить игры по фильтру, затем обработать ответ от сервера,..
         (response) => {

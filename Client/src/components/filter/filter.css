@@ -4,6 +4,7 @@
     margin-right: 20px;
     border-radius: 8px;
     width: 250px;
+    max-width: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
@@ -16,6 +17,7 @@
     margin-bottom: 8px;
   }
   
+  .filter input[type="text"],
   .filter input[type="number"] {
     width: 100%;
     padding: 10px;
@@ -24,6 +26,18 @@
     border-radius: 5px;
   }
   
+.filter .sort-order {
+  margin-bottom: 15px;
+}
+
+.filter .sort-order label {
+  display: block;
+}
+
+.filter .sort-order input[type="radio"] {
+  margin-right: 5px;
+}
+
   .filter p {
     font-size: 1.1rem;
     font-weight: bold;
@@ -39,11 +53,12 @@
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
   .filter button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
   }
   
   .filter button:focus {
@@ -51,3 +66,8 @@
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
   }
 
+  .filter input[type="number"]:focus,
+  .filter input[type="text"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }

@@ -5,5 +5,11 @@ export type FilterParams = {
     minCurPrice: number,
 
     /** Максимальная текущая цена. */
-    maxCurPrice: number
+    maxCurPrice: number,
+
+    /** Порядок сортировки. */
+    order: string,
+
+    /** Имя игры или его часть. */
+    name: string
 };
