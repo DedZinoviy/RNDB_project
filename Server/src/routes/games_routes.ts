@@ -24,7 +24,11 @@ games_router.get(
         // Получить игры по подстроке названия игры.
         if (req.query.name_elem != undefined) { doc.push({$match: {'name': {$regex: req.query.name_elem, $options:"i"}}}); }
 
-        doc.push({$sort: {'name': 1}}); // Осортировать игры по названию.
+        // Определить порядок сортировки.
+        let order = 1; // Отсортировать по умолчанию по возрастанию.
+        if (req.query.order != undefined) { order = Number(req.query.order); }
+
+        doc.push({$sort: {'name': order}}); // Осортировать игры по названию.
         result_array = await get_games_by(doc); // Получение игр из БД по запросу.
         res.send(result_array); // Ответ на запрос.
     }
