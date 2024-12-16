@@ -43,7 +43,7 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
 
     return (
         <form className="filter" onSubmit={handleSubmit}>
-          <h2>Фильтрация по цене</h2>
+          <h2>Фильтрация</h2>
           {/* Поле для поиска */}
           <label htmlFor="search">Поиск по названию:</label>
           <input
@@ -75,7 +75,7 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
             onChange={handleMaxPriceChange}
           />
           <p>
-            Цена: <span id="price-range">{minPrice}₽ - {maxPrice}₽</span>
+            Цена: <span id="price-range">{minPrice}$ - {maxPrice}$</span>
           </p>
           {/* Параметры сортировки */}
           <div className="sort-order">
