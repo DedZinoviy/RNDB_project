@@ -31,10 +31,15 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
     const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(Number(e.target.value));
     const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(Number(e.target.value));
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // По умолчанию сортировка по возрастанию.
+    const [sortBy, setSortBy] = useState<'name' | 'price'>('name'); // По умолчанию сортировка по имени.
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleSortOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSortOrder(e.target.value as 'asc' | 'desc');
+    };
+    
+    const handleSortByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSortBy(e.target.value as 'name' | 'price');
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +82,30 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
           <p>
             Цена: <span id="price-range">{minPrice}$ - {maxPrice}$</span>
           </p>
+          {/* Сортировка по критерию */}
+          <div className="sort-by">
+          <label>Сортировать по:</label>
+          <label>
+            <input
+              type="radio"
+              name="sortBy"
+              value="name"
+              checked={sortBy === 'name'}
+              onChange={handleSortByChange}
+            />
+            По названию
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="sortBy"
+              value="price"
+              checked={sortBy === 'price'}
+              onChange={handleSortByChange}
+            />
+            По цене
+          </label>
+          </div>
           {/* Параметры сортировки */}
           <div className="sort-order">
             <label>Порядок сортировки:</label>
@@ -116,8 +145,9 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
       const minCurPrice = parseInt(formData.get('min-price') as string);
       const maxCurPrice = parseInt(formData.get('max-price') as string);
       const sorting_order = formData.get('sortOrder') as string;
+      const sort_by = formData.get('sortBy') as string;
       const search = formData.get('search') as string;
-      const FilterData: FilterParams = {minCurPrice: minCurPrice, maxCurPrice: maxCurPrice, order: sorting_order, name: search};
+      const FilterData: FilterParams = {minCurPrice: minCurPrice, maxCurPrice: maxCurPrice, order: sorting_order, sort_by: sort_by, name: search};
       
       get_games_by(FilterData).then( // Получить игры по фильтру, затем обработать ответ от сервера,..
         (response) => {

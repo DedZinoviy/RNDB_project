@@ -38,6 +38,18 @@
   margin-right: 5px;
 }
 
+.filter .sort-by {
+  margin-bottom: 15px;
+}
+
+.filter .sort-by label {
+  display: block;
+}
+
+.filter .sort-by input[type="radio"] {
+  margin-right: 5px;
+}
+
   .filter p {
     font-size: 1.1rem;
     font-weight: bold;

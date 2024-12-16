@@ -10,6 +10,9 @@ export type FilterParams = {
     /** Порядок сортировки. */
     order: string,
 
+    /** Поле, по которому проводить сортировку. */
+    sort_by: string,
+
     /** Имя игры или его часть. */
     name: string
 };
