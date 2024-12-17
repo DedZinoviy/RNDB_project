@@ -7,6 +7,12 @@ export type FilterParams = {
     /** Максимальная текущая цена. */
     maxCurPrice: number,
 
+    /** Минимальный рейтинг IGDB. */
+    minIGDBScore: number,
+
+    /** Максимальный рейтинг IGDB. */
+    maxIGDBScore: number,
+
     /** Порядок сортировки. */
     order: string,
 

@@ -9,13 +9,13 @@ import { itemsPerPage } from '../../pages/GameListPage';
  * Свойства компонента фильтра.
  */
 interface FilterProps {
-  
+
   /** Метод для записи игр. */
   setGames: (React.Dispatch<React.SetStateAction<Game[]>>)
-  
+
   /** Метод для записи текущей страницы. */
   setCurrentPage: (React.Dispatch<React.SetStateAction<number>>)
-  
+
   /** Метод для записи количества страниц. */
   setTotalPages: (React.Dispatch<React.SetStateAction<number>>)
 }
@@ -25,65 +25,94 @@ interface FilterProps {
  * @param FilterProps.setGames метод для записи списка игр.
  * @returns компонент отображения фильтра игр.
  */
-export default function Filter({setGames, setCurrentPage, setTotalPages} : FilterProps) {
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(10000);
-    const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(Number(e.target.value));
-    const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(Number(e.target.value));
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // По умолчанию сортировка по возрастанию.
-    const [sortBy, setSortBy] = useState<'name' | 'price'>('name'); // По умолчанию сортировка по имени.
-    const [searchQuery, setSearchQuery] = useState('');
+export default function Filter({ setGames, setCurrentPage, setTotalPages }: FilterProps) {
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(10000);
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(Number(e.target.value));
+  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(Number(e.target.value));
 
-    const handleSortOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSortOrder(e.target.value as 'asc' | 'desc');
-    };
-    
-    const handleSortByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSortBy(e.target.value as 'name' | 'price');
-    };
+  const [minIGDBScore, setMinIGDBScore] = useState(0);
+  const [maxIGDBScore, setMaxIGDBScore] = useState(100);
+  const handleMinIGDBScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinIGDBScore(Number(e.target.value));
+  const handleMaxIGDBScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxIGDBScore(Number(e.target.value));
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(e.target.value);
-    };
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // По умолчанию сортировка по возрастанию.
+  const [sortBy, setSortBy] = useState<'name' | 'price'>('name'); // По умолчанию сортировка по имени.
+  const [searchQuery, setSearchQuery] = useState('');
 
-    return (
-        <form className="filter" onSubmit={handleSubmit}>
-          <h2>Фильтрация</h2>
-          {/* Поле для поиска */}
-          <label htmlFor="search">Поиск по названию:</label>
-          <input
-            type="text"
-            id="search"
-            name="search"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Введите название игры или его часть"
-          />
-          <label htmlFor="min-price">Минимальная цена:</label>
-          <input
-            type="number"
-            id="min-price"
-            name="min-price"
-            min="0"
-            max="10000"
-            value={minPrice}
-            onChange={handleMinPriceChange}
-          />
-          <label htmlFor="max-price">Максимальная цена:</label>
-          <input
-            type="number"
-            id="max-price"
-            name="max-price"
-            min="0"
-            max="10000"
-            value={maxPrice}
-            onChange={handleMaxPriceChange}
-          />
-          <p>
-            Цена: <span id="price-range">{minPrice}$ - {maxPrice}$</span>
-          </p>
-          {/* Сортировка по критерию */}
-          <div className="sort-by">
+  const handleSortOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSortOrder(e.target.value as 'asc' | 'desc');
+  };
+
+  const handleSortByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSortBy(e.target.value as 'name' | 'price');
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  return (
+    <form className="filter" onSubmit={handleSubmit}>
+      <h2>Фильтрация</h2>
+      <div className="filter-content">
+        {/* Поля фильтрации */}
+        <label htmlFor="search">Поиск по названию:</label>
+        <input
+          type="text"
+          id="search"
+          name="search"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Введите название игры или его часть"
+        />
+        <label htmlFor="min-price">Минимальная цена:</label>
+        <input
+          type="number"
+          id="min-price"
+          name="min-price"
+          min="0"
+          max="10000"
+          value={minPrice}
+          onChange={handleMinPriceChange}
+        />
+        <label htmlFor="max-price">Максимальная цена:</label>
+        <input
+          type="number"
+          id="max-price"
+          name="max-price"
+          min="0"
+          max="10000"
+          value={maxPrice}
+          onChange={handleMaxPriceChange}
+        />
+        <p>
+          Цена: <span id="price-range">{minPrice}$ - {maxPrice}$</span>
+        </p>
+        <label htmlFor="min-igdb">Минимальный Рейтинг IGDB:</label>
+        <input
+          type="number"
+          id="min-igdb"
+          name="min-igdb"
+          min="0"
+          max="100"
+          value={minIGDBScore}
+          onChange={handleMinIGDBScoreChange}
+        />
+        <label htmlFor="max-igdb">Максимальный Рейтинг IGDB:</label>
+        <input
+          type="number"
+          id="max-igdb"
+          name="max-igdb"
+          min="0"
+          max="100"
+          value={maxIGDBScore}
+          onChange={handleMaxIGDBScoreChange}
+        />
+        <p>
+          Рейтинг IGDB: <span id="igdb-range">{minIGDBScore} - {maxIGDBScore}</span>
+        </p>
+        <div className="sort-by">
           <label>Сортировать по:</label>
           <label>
             <input
@@ -105,64 +134,69 @@ export default function Filter({setGames, setCurrentPage, setTotalPages} : Filte
             />
             По цене
           </label>
-          </div>
-          {/* Параметры сортировки */}
-          <div className="sort-order">
-            <label>Порядок сортировки:</label>
-            <label>
-              <input
-                type="radio"
-                name="sortOrder"
-                value="asc"
-                checked={sortOrder === 'asc'}
-                onChange={handleSortOrderChange}
-              />
+        </div>
+        <div className="sort-order">
+          <label>Порядок сортировки:</label>
+          <label>
+            <input
+              type="radio"
+              name="sortOrder"
+              value="asc"
+              checked={sortOrder === 'asc'}
+              onChange={handleSortOrderChange}
+            />
             По возрастанию
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="sortOrder"
-                value="desc"
-                checked={sortOrder === 'desc'}
-                onChange={handleSortOrderChange}
-              />
-              По убыванию
-            </label>
-          </div>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="sortOrder"
+              value="desc"
+              checked={sortOrder === 'desc'}
+              onChange={handleSortOrderChange}
+            />
+            По убыванию
+          </label>
+        </div>
+      </div>
+      <button type="submit">Применить фильтры</button>
+    </form>
 
-          <button type="submit">Применить фильтры</button>
-        </form>
-    );
+  );
 
-    /**
-     * Обработать сабмит формы фильтров.
-     * @param e событие формы фильтров.
-     */
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
-      const minCurPrice = parseInt(formData.get('min-price') as string);
-      const maxCurPrice = parseInt(formData.get('max-price') as string);
-      const sorting_order = formData.get('sortOrder') as string;
-      const sort_by = formData.get('sortBy') as string;
-      const search = formData.get('search') as string;
-      const FilterData: FilterParams = {minCurPrice: minCurPrice, maxCurPrice: maxCurPrice, order: sorting_order, sort_by: sort_by, name: search};
-      
-      get_games_by(FilterData).then( // Получить игры по фильтру, затем обработать ответ от сервера,..
-        (response) => {
-            if (response.ok) return response.json(); // Вернуть массив JSON ответа, если запрос успешен.
-            throw new Error("Failed to fetch games"); // Иначе сообщить о проблеме.
+  /**
+   * Обработать сабмит формы фильтров.
+   * @param e событие формы фильтров.
+   */
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const minCurPrice = parseInt(formData.get('min-price') as string);
+    const maxCurPrice = parseInt(formData.get('max-price') as string);
+    const minIGDB = parseInt(formData.get('min-igdb') as string);
+    const maxIGDB = parseInt(formData.get('max-igdb') as string);
+    const sorting_order = formData.get('sortOrder') as string;
+    const sort_by = formData.get('sortBy') as string;
+    const search = formData.get('search') as string;
+    const FilterData: FilterParams = {
+      minCurPrice: minCurPrice, maxCurPrice: maxCurPrice, order: sorting_order, sort_by: sort_by, name: search,
+      minIGDBScore: minIGDB, maxIGDBScore: maxIGDB
+    };
+
+    get_games_by(FilterData).then( // Получить игры по фильтру, затем обработать ответ от сервера,..
+      (response) => {
+        if (response.ok) return response.json(); // Вернуть массив JSON ответа, если запрос успешен.
+        throw new Error("Failed to fetch games"); // Иначе сообщить о проблеме.
+      }
+    ).then( //... затем обработать JSON массив.
+      (json) => {
+        if (json.length > 0) { // Получить преобразованный в нужный тип массив игр, если таковые получены.
+          const g = json_to_game(json);
+          setCurrentPage(1);
+          setTotalPages(Math.ceil(g.length / itemsPerPage));
+          setGames(g);
         }
-      ).then( //... затем обработать JSON массив.
-        (json) => {
-            if (json.length > 0) { // Получить преобразованный в нужный тип массив игр, если таковые получены.
-                const g = json_to_game(json);
-                setCurrentPage(1);
-                setTotalPages(Math.ceil(g.length / itemsPerPage));
-                setGames(g);
-            }
-        }
-      )
-    }
+      }
+    )
+  }
 }
