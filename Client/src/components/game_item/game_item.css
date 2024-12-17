@@ -37,6 +37,12 @@
     color: #333;
     font-weight: bold;
   }
+
+  .game-item .genres-list {
+    font-size: 1rem;
+    color: #333;
+    font-style: italic;
+  }
   
   .game-item:hover {
     transform: scale(1.01);
