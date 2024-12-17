@@ -22,8 +22,12 @@ export async function get_games_by(params: FilterParams) {
     if (params.minCurPrice !== undefined && !Number.isNaN(params.minCurPrice)) {checked_params.min_cur_price = params.minCurPrice.toString();}
     // Добавить максимальную текущую цену, если таковая определена.
     if (params.maxCurPrice !== undefined && !Number.isNaN(params.maxCurPrice)) {checked_params.max_cur_price = params.maxCurPrice.toString();}
+    // Добавить минимальный рейтинг IGDB, если таковой определен.
+    if (params.minIGDBScore !== undefined && !Number.isNaN(params.minIGDBScore)) {checked_params.min_igdb_score = params.minIGDBScore.toString();}
+    // Добавить максимальный рейтинг IGDB, если таковой определен.
+    if (params.maxIGDBScore !== undefined && !Number.isNaN(params.maxIGDBScore)) {checked_params.max_igdb_score = params.maxIGDBScore.toString();}
     // Добавить порядок сортировки, если таковой определен.
-    if (params.maxCurPrice !== undefined) {checked_params.order = (params.order === 'desc' ? -1 : 1).toString();}
+    if (params.order !== undefined) {checked_params.order = (params.order === 'desc' ? -1 : 1).toString();}
     // Добавить имя игры или его часть для поиска, если таковая определена.
     if (params.name !== undefined) {checked_params.name_elem = params.name; }
     // Добавить поле, по которому проводить сортировку, если такое указано.

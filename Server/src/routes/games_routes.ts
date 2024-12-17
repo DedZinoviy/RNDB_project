@@ -21,6 +21,12 @@ games_router.get(
         // Получить игры с минимальной текущей игрой из запроса.
         if (req.query.min_cur_price != undefined) { doc.push({$match: {'current_price': {$gte: Number(req.query.min_cur_price)}}}); }
         
+        // Получить игры с максимальным рейтингом IGDB из запроса.
+        if (req.query.max_igdb_score != undefined) { doc.push({$match: {'igdb_score': {$lte: Number(req.query.max_igdb_score)}}}); }
+        
+        // Получить игры с минимальным рейтингом IGDB из запроса.
+        if (req.query.min_igdb_score != undefined) { doc.push({$match: {'igdb_score': {$gte: Number(req.query.min_igdb_score)}}}); }
+
         // Получить игры по подстроке названия игры.
         if (req.query.name_elem != undefined) { doc.push({$match: {'name': {$regex: req.query.name_elem, $options:"i"}}}); }
 
