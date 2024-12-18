@@ -8,7 +8,7 @@ if (!DATABASE_URL) { // Сообщить, если не удалось полу�
 }
 
 const client = new MongoClient(url); // Клиент подключения к MongoDB.
-
+connect_to_db();
 /**
  * Попытаться подключиться к базе данных.
  */
@@ -36,11 +36,9 @@ async function close_connection() {
  * @returns массив документов игр.
  */
 export async function get_all_games() {
-    await connect_to_db() // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const cursor = collection.find(); // Получить все записи из коллекции.
     const games =  await cursor.toArray();
-    await close_connection(); // Закрыть сооединение к базе данных.
     return games; // Вернуть массив с записями игр.
 }
 
@@ -55,13 +53,11 @@ export async function get_games_by(pipline: Document[]) {
     //     {$match: {sid: 10}}
     // ];
 
-    await connect_to_db() // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
 
     const cursor = collection.aggregate(pipline); // Получить записи из коллекции согласно пайплайну.
     const games =  await cursor.toArray(); 
 
-    await close_connection(); // Закрыть сооединение к базе данных.
     return games; // Вернуть массив с записями игр.
 }
 
@@ -71,10 +67,8 @@ export async function get_games_by(pipline: Document[]) {
  * @returns успешность вставки.
  */
 export async function insert_one(doc : Document) {
-    await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.insertOne(doc); // Создать документ в БД.
-    await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат вставки.
 }
 
@@ -84,10 +78,8 @@ export async function insert_one(doc : Document) {
  * @returns успешность вставки.
  */
 export async function insert_many(docs : Document[]) {
-    await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.insertMany(docs); // Создать документы в БД.
-    await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат вставки.
 }
 
@@ -98,10 +90,8 @@ export async function insert_many(docs : Document[]) {
  * @returns успешность изменения.
  */
 export async function update_one(filter : Document, updated_doc : Document) {
-    await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.updateOne(filter, {$set: updated_doc}); // Изменить документ в БД.
-    await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат изменения.
 }
 
@@ -112,10 +102,8 @@ export async function update_one(filter : Document, updated_doc : Document) {
  * @returns успешность изменения.
  */
 export async function update_many(filter : Document, updated_doc : Document) {
-    await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.updateMany(filter, {$set: updated_doc}); // Изменить документы в БД.
-    await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат изменения.
 }
 
@@ -125,10 +113,8 @@ export async function update_many(filter : Document, updated_doc : Document) {
  * @returns Успешность удаления.
  */
 export async function delete_one(filter: Document) {
-    await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.deleteOne(filter); // Удалить документ в БД.
-    await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат изменения.
 }
 
@@ -138,9 +124,7 @@ export async function delete_one(filter: Document) {
  * @returns Успешность удаления.
  */
 export async function delete_many(filter: Document) {
-    await connect_to_db(); // Подключиться к базе данных.
     const collection = client.db('steamdb').collection('steamdb'); // Выбрать требуемую коллекцию.
     const result = await collection.deleteOne(filter); // Удалить документы в БД.
-    await close_connection(); // Закрыть сооединение к базе данных.
     return result; // Вернуть результат удаления.    
 }
