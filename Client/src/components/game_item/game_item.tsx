@@ -15,6 +15,9 @@ export default function GameItem({game}: GameItemProp) {
                 <p className="price">Цена: {game.current_price}₽</p>
                 <p className="igdb-score">Рейтинг IGDB: {game.igdb_score}</p>
                 <p className="genres-list">Жанры: {game.genres}</p>
+                <p className="developers">Разработчики: {game.developers}</p>
+                <p className="publishers">Издатели: {game.publishers}</p>
+                <p className="published">Дата выхода: {game.published}</p>
             </div>
         </div>
     );

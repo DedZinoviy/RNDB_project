@@ -32,13 +32,14 @@
     margin-bottom: 10px;
   }
   
-  .game-item .price, .game-item .igdb-score {
+  .game-item .price, .game-item .igdb-score{
     font-size: 1.2rem;
     color: #333;
     font-weight: bold;
   }
 
-  .game-item .genres-list {
+  .game-item .genres-list, .game-item .published,
+  .game-item .developers, .game-item .publishers {
     font-size: 1rem;
     color: #333;
     font-style: italic;
