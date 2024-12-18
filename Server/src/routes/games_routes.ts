@@ -4,6 +4,21 @@ import { get_games_by } from '../db/db';
 
 const games_router = Router(); // Экземляр роутера для запросов о играх.
 
+/** Поля, которые требуются для получения из БД. */
+const filter = {$project: {
+    sid: true,
+    store_url: true,
+    published_store: true,
+    "name": true,
+    "image": true,
+    description: true,
+    current_price: { $ifNull: ["$current_price", 0] },
+    developers: true,
+    publishers: true,
+    genres: true,
+    igdb_score:  { $ifNull: ["$igdb_score", 0] }
+}};
+
 /**
  * Обработка маршрута получения игр.
  */
@@ -14,6 +29,9 @@ games_router.get(
 
         // Запрос к БД.
         let doc: Document[] = [];
+        
+        // Обрабатывать только требуемые поля.
+        doc.push(filter);
         
         // Получить игры с максимальной текущей ценой из запроса.
         if (req.query.max_cur_price != undefined) { doc.push({$match: {$or: [{'current_price': {$lte: Number(req.query.max_cur_price)}}, {'current_price': null}]}}); }
