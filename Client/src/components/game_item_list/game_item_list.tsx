@@ -14,11 +14,12 @@ interface GameItemListProp {
  * @returns Компонент отображения списка игр.
 */
 const GameItemList: React.FC<GameItemListProp> = ({ games }: GameItemListProp) => {
+  console.log(games)
   return (
     <section className="games-list">
-      {games.map((game) => (
+      {games.length !== 0 ?  games.map((game) => (
         <GameItem game={game} key={game.sid} />
-      ))}
+      )) : <p>Ничего не найдено.</p>}
     </section>
   );
 };

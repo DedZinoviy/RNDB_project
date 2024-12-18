@@ -82,3 +82,16 @@
   border-color: #007BFF;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
+
+.filter .genres {
+  margin-bottom: 15px;
+}
+
+.filter .genres label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter .genres input[type="checkbox"] {
+  margin-right: 5px;
+}

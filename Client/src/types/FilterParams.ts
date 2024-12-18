@@ -20,5 +20,8 @@ export type FilterParams = {
     sort_by: string,
 
     /** Имя игры или его часть. */
-    name: string
+    name: string,
+
+    /** Массив жанров. */
+    genres: string[]
 };
