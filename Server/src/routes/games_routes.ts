@@ -16,19 +16,32 @@ games_router.get(
         let doc: Document[] = [];
         
         // Получить игры с максимальной текущей ценой из запроса.
-        if (req.query.max_cur_price != undefined) { doc.push({$match: {'current_price': {$lte: Number(req.query.max_cur_price)}}}); }
+        if (req.query.max_cur_price != undefined) { doc.push({$match: {$or: [{'current_price': {$lte: Number(req.query.max_cur_price)}}, {'current_price': null}]}}); }
         
         // Получить игры с минимальной текущей игрой из запроса.
-        if (req.query.min_cur_price != undefined) { doc.push({$match: {'current_price': {$gte: Number(req.query.min_cur_price)}}}); }
+        if (req.query.min_cur_price != undefined) { 
+            if (Number(req.query.min_cur_price) === 0) {doc.push({$match: {$or: [{'current_price': {$gte: 0}}, {'current_price': null}]}})}
+            else doc.push({$match: {'current_price': {$gte: Number(req.query.min_cur_price)}}}); }
         
         // Получить игры с максимальным рейтингом IGDB из запроса.
-        if (req.query.max_igdb_score != undefined) { doc.push({$match: {'igdb_score': {$lte: Number(req.query.max_igdb_score)}}}); }
+        if (req.query.max_igdb_score != undefined) { doc.push({$match: {$or: [{'igdb_score': {$lte: Number(req.query.max_igdb_score)}}, {'igdb_score': null}]}}); }
         
         // Получить игры с минимальным рейтингом IGDB из запроса.
-        if (req.query.min_igdb_score != undefined) { doc.push({$match: {'igdb_score': {$gte: Number(req.query.min_igdb_score)}}}); }
+        if (req.query.min_igdb_score != undefined) { 
+            if (Number(req.query.min_igdb_score) === 0) {doc.push({$match: {$or: [{'igdb_score': {$gte: 0}}, {'igdb_score': null}]}})}
+            else doc.push({$match: {'igdb_score': {$gte: Number(req.query.min_igdb_score)}}}); 
+        }
 
         // Получить игры по подстроке названия игры.
         if (req.query.name_elem != undefined) { doc.push({$match: {'name': {$regex: req.query.name_elem, $options:"i"}}}); }
+
+        // Получить игры по жанарам.
+        if (req.query.genres != undefined) {
+            const genres = (req.query.genres as string).split(',') ;
+            for (const genre of genres) {
+                doc.push({$match: {'genres': {$regex: genre, $options:"i"}}});
+            }
+        }
 
         // Определить порядок сортировки.
         let order = 1; // Отсортировать по умолчанию по возрастанию.
