@@ -34,6 +34,7 @@ export async function get_games_by(params: FilterParams) {
     if (params.sort_by !== undefined) {
         if (params.sort_by === 'price') {checked_params.sort_by = 'current_price';} // Если определена сортировка по текущей цене, добавить текущую цену.
         else if (params.sort_by === 'name') {checked_params.sort_by = 'name';} // ИначеЕсли определена сортировка по имени, добавить имя.
+        else if (params.sort_by === 'igdb_score') {checked_params.sort_by = 'igdb_score';} // ИначеЕсли определена сортировка по рейтингу IGDB, добавить рейтинг IGDB.
     }
     if (params.genres !== undefined && params.genres.length !== 0) {
         const genresString = params.genres.join(',');

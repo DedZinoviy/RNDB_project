@@ -40,7 +40,7 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
   const handleMaxIGDBScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxIGDBScore(Number(e.target.value));
 
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // По умолчанию сортировка по возрастанию.
-  const [sortBy, setSortBy] = useState<'name' | 'price'>('name'); // По умолчанию сортировка по имени.
+  const [sortBy, setSortBy] = useState<'name' | 'price' | 'igdb_score'>('name'); // По умолчанию сортировка по имени.
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSortOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +101,7 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
           onChange={handleMaxPriceChange}
         />
         <p>
-          Цена: <span id="price-range">{minPrice}$ - {maxPrice}$</span>
+          Цена: <span id="price-range">{minPrice}₽ - {maxPrice}₽</span>
         </p>
         <label htmlFor="min-igdb">Минимальный Рейтинг IGDB:</label>
         <input
@@ -164,6 +164,16 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
               onChange={handleSortByChange}
             />
             По цене
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="sortBy"
+              value="igdb_score"
+              checked={sortBy === 'igdb_score'}
+              onChange={handleSortByChange}
+            />
+            По рейтингу IGDB
           </label>
         </div>
         <div className="sort-order">
