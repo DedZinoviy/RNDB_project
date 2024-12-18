@@ -102,4 +102,50 @@ games_router.delete(
     }
 );
 
+/**
+ * Обработка получения значений фильтра.
+ */
+games_router.get('/filters', async (req: Request, res: Response) => {
+    // Массив результатов запроса к БД.
+    let result_array: Document[];
+
+    // Запрос к БД.
+    let doc: Document[] = [];
+    
+    // Обрабатывать только требуемые поля.
+    doc.push({
+        $project: {
+          sid: true,
+          store_url: true,
+          published_store: true,
+          "name": true,
+          "image": true,
+          description: true,
+          current_price: { $ifNull: ["$current_price", 0] }, // Замена null на 0 для current_price
+          developers: true,
+          publishers: true,
+          genres: { 
+            $split: ["$genres", ","] // Разбитие строки жанров на массив
+          },
+          igdb_score: { $ifNull: ["$igdb_score", 0] } // Замена null на 0 для igdb_score
+        }
+      });
+    
+    // Получить значения для фильтров при помощи группировки.
+    const group = {
+        $group: {
+            _id: null, 
+            min_cur_price: { $min: "$current_price" }, // Минимальное значение для current_price
+            max_cur_price: { $max: "$current_price" }, // Максимальное значение для current_price
+            min_igdb_score: { $min: "$igdb_score" }, // Минимальное значение для igdb_score
+            max_igdb_score: { $max: "$igdb_score" }, // Максимальное значение для igdb_score
+            uniqueGenres: { $addToSet: { $arrayElemAt: ["$genres", 0] } } // Убирать дубликаты жанров
+          }
+    };
+
+    doc.push(group);
+    result_array = await get_games_by(doc); // Обработка запроса к БД.
+    res.send(result_array); // Ответ на запрос.
+});
+
 export default games_router; // Экспортировать роутер для других модулей.
