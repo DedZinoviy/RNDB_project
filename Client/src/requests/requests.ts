@@ -44,3 +44,12 @@ export async function get_games_by(params: FilterParams) {
     const response = await fetch('http://' + host + '/games?' + new URLSearchParams(checked_params).toString(), {method: 'GET'}); // Отправить запрос на сервер.
     return response;
 }
+
+/**
+ * Получить значения для фильтров от сервера.
+ * @returns ответ от сервера.
+ */
+export async function get_filters() {
+    const response = await fetch('http://'+ host + '/games/filters', {method: 'GET'}); // Отправить запрос на сервер.
+    return response;
+}

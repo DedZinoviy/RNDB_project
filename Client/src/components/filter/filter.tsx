@@ -1,8 +1,8 @@
 import './filter.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FilterParams } from '../../types/FilterParams';
 import { Game, json_to_game } from '../../types/game';
-import { get_games_by } from '../../requests/requests';
+import { get_filters, get_games_by } from '../../requests/requests';
 import { itemsPerPage } from '../../pages/GameListPage';
 
 /**
@@ -18,9 +18,6 @@ interface FilterProps {
 
   /** Метод для записи количества страниц. */
   setTotalPages: (React.Dispatch<React.SetStateAction<number>>);
-    
-  /** Список жанров. */
-  genres: string[];
 }
 
 /**
@@ -28,11 +25,18 @@ interface FilterProps {
  * @param FilterProps.setGames метод для записи списка игр.
  * @returns компонент отображения фильтра игр.
  */
-export default function Filter({ setGames, setCurrentPage, setTotalPages, genres }: FilterProps) {
+export default function Filter({ setGames, setCurrentPage, setTotalPages }: FilterProps) {
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(10000);
+  const [maxPrice, setMaxPrice] = useState(0);
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(Number(e.target.value));
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(Number(e.target.value));
+
+  const [totalMinPrice, setTotalMinPrice] = useState(0);
+  const [totalMaxPrice, setTotalMaxPrice] = useState(0);
+
+  const [totalMinIGDB, setTotalMinIGDB] = useState(0);
+  const [totalMaxIGDB, setTotalMaxIGDB] = useState(0);
+
 
   const [minIGDBScore, setMinIGDBScore] = useState(0);
   const [maxIGDBScore, setMaxIGDBScore] = useState(100);
@@ -43,12 +47,40 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
   const [sortBy, setSortBy] = useState<'name' | 'price' | 'igdb_score'>('name'); // По умолчанию сортировка по имени.
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [genres, setGenres] = useState<string[]>([]);
+  
+  useEffect(()=>{
+    get_filters().then(
+        (response) => {
+            if (response.ok) return response.json(); // Вернуть массив JSON ответа, если запрос успешен.
+            throw new Error("Failed to fetch filters"); // Иначе сообщить о проблеме.
+        } 
+    ).then(
+        (json) => {
+            if (json.length > 0) { // Обработать json, если запрос успешен.
+                console.log(json);
+                setGenres(json[0].uniqueGenres);
+                setTotalMinPrice(json[0].min_cur_price);
+                setMinPrice(json[0].min_cur_price);
+                setMaxPrice(json[0].max_cur_price);
+                setTotalMaxPrice(json[0].max_cur_price);
+                setMinIGDBScore(json[0].min_igdb_score);
+                setTotalMinIGDB(json[0].min_igdb_score);
+                setMaxIGDBScore(json[0].max_igdb_score);
+                setTotalMaxIGDB(json[0].max_igdb_score);
+            }
+        }
+    )
+},[]);
+
+  console.log(genres);
+
   const handleSortOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSortOrder(e.target.value as 'asc' | 'desc');
   };
 
   const handleSortByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSortBy(e.target.value as 'name' | 'price');
+    setSortBy(e.target.value as 'name' | 'price' | 'igdb_score');
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,8 +117,8 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
           type="number"
           id="min-price"
           name="min-price"
-          min="0"
-          max="10000"
+          min={totalMinPrice}
+          max={totalMaxPrice}
           value={minPrice}
           onChange={handleMinPriceChange}
         />
@@ -95,8 +127,8 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
           type="number"
           id="max-price"
           name="max-price"
-          min="0"
-          max="10000"
+          min={totalMinPrice}
+          max={totalMaxPrice}
           value={maxPrice}
           onChange={handleMaxPriceChange}
         />
@@ -108,8 +140,8 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
           type="number"
           id="min-igdb"
           name="min-igdb"
-          min="0"
-          max="100"
+          min={totalMinIGDB}
+          max={totalMaxIGDB}
           value={minIGDBScore}
           onChange={handleMinIGDBScoreChange}
         />
@@ -118,8 +150,8 @@ export default function Filter({ setGames, setCurrentPage, setTotalPages, genres
           type="number"
           id="max-igdb"
           name="max-igdb"
-          min="0"
-          max="100"
+          min={totalMinIGDB}
+          max={totalMaxIGDB}
           value={maxIGDBScore}
           onChange={handleMaxIGDBScoreChange}
         />
